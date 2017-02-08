@@ -484,35 +484,23 @@ void Draw ( ESContext *esContext )
 //
 void Shutdown ( ESContext *esContext )
 {
-   UserData *userData = esContext->userData;
+    UserData *userData = esContext->userData;
 
-   if ( userData->vertices != NULL )
-   {
-      free ( userData->vertices );
-   }
+    free ( userData->vertices );
+    free ( userData->indices );
+    free ( userData->texCoords );
 
-   if ( userData->indices != NULL )
-   {
-      free ( userData->indices );
-   }
+    // Delete texture object
+    glDeleteTextures ( 1, &userData->textureId );
 
-   if ( userData->texCoords != NULL );
-
-   {
-      free ( userData->texCoords );
-   }
-
-   // Delete texture object
-   glDeleteTextures ( 1, &userData->textureId );
-
-   // Delete program object
-   glDeleteProgram ( userData->programObject );
+    // Delete program object
+    glDeleteProgram ( userData->programObject );
 }
 
 
 int esMain ( ESContext *esContext )
 {
-   esContext->userData = malloc ( sizeof ( UserData ) );
+   esContext->userData = calloc ( 1, sizeof ( UserData ) );
 
    esCreateWindow ( esContext, "Noise3D", 800, 600, ES_WINDOW_RGB | ES_WINDOW_DEPTH );
 
